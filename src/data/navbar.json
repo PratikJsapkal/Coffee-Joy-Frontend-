@@ -1,0 +1,74 @@
+{
+  "links": [
+    {
+      "label": "COFFEE",
+      "href": "/Products?category=coffee",
+      "dropdown": [
+        {
+          "title": "Beans & Grounds",
+          "items": [
+            { "label": "Whole Bean", "slug": "whole-bean" },
+            { "label": "Ground Coffee", "slug": "ground-coffee" },
+            { "label": "Single Origin", "slug": "single-origin" },
+            { "label": "Blends", "slug": "blends" },
+            { "label": "Decaf", "slug": "decaf" }
+          ]
+        },
+        {
+          "title": "Pods & Capsules",
+          "items": [
+            { "label": "Coffee Pods", "slug": "coffee-pods" },
+            { "label": "Coffee Capsules", "slug": "coffee-capsules" },
+            { "label": "Nespresso Pods", "slug": "nespresso" }
+            
+          ]
+        }
+      ]
+    },
+    {
+      "label": "MACHINES",
+      "href": "/Products?category=machine",
+      "dropdown": [
+        {
+          "title": "Espresso",
+          "items": [
+            { "label": "Semi Automatic", "slug": "semi-automatic" },
+            { "label": "Fully Automatic", "slug": "fully-automatic" },
+            { "label": "Commercial", "slug": "commercial" },
+            { "label": "Manual", "slug": "manual" }
+          ]
+        },
+        {
+          "title": "Drip & Grinders",
+          "items": [
+            { "label": "Auto Drip", "slug": "drip" },
+            { "label": "Pour Over", "slug": "pour-over" },
+            {"label": "Grinders","slug":"grinders"}
+          ]
+        }
+      ]
+    },
+    {
+      "label": "ACCESSORIES",
+      "href": "/Products?category=accessories",
+      "dropdown": [
+        {
+          "title": "Accessories",
+          "items": [
+            { "label": "Mugs", "slug": "mugs" },
+            { "label": "Filters", "slug": "filters" },
+            { "label": "Scoops", "slug": "scoops" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "ABOUT US",
+      "href": "/#about-us"
+    },
+    {
+      "label": "SUBSCRIPTION",
+      "href": "/subscription"
+    }
+  ]
+}

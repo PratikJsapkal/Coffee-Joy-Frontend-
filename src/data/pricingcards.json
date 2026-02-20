@@ -1,0 +1,69 @@
+{
+  "background": {
+    "mainImage": "/images/bg2.webp",
+    "overlayImages": {
+      "beansTopLeft": "/images/subscribe1.webp"
+    }
+  },
+
+  "branding": {
+    "name": "Coffee & Joy",
+    "headline": "Subscribe today.",
+    "subtext": "WatchHouse. YourHouse.\nThe modern coffee experience at home.",
+    "ctaText": "Subscribe for a never-ending cup."
+  },
+
+  "plans": {
+    "coffee": [
+      {
+        "id": "espresso-1829",
+        "title": "1829 Espresso",
+        "price": "$12.00",
+        "description": "A flexible monthly coffee subscription charged automatically. Enjoy freshly roasted beans delivered on schedule, with full control to pause, skip, or cancel anytime.",
+        "features": [
+          "Expertly roasted",
+          "Pause anytime",
+          "10% off always"
+        ]
+      },
+      {
+        "id": "roasters-spotlight",
+        "title": "Roaster's Spotlight",
+        "price": "$15.00",
+        "description": "Pay upfront and enjoy a curated coffee journey. Ideal for gifting or long-term savings, with premium roasts delivered consistently for months ahead.",
+        "highlight": true,
+        "features": [
+          "Limited edition roasts",
+          "Best value plan",
+          "Priority delivery"
+        ]
+      }
+    ],
+
+    "pods": [
+      {
+        "id": "pods-autopay",
+        "title": "Autopay Subscription",
+        "price": "$10.00",
+        "description": "Convenient autopay pod deliveries designed for everyday ease. Perfectly portioned pods arrive regularly, so your coffee routine never misses a beat.",
+        "features": [
+          "Perfectly portioned",
+          "Automatic deliveries",
+          "Cancel anytime"
+        ]
+      },
+      {
+        "id": "pods-prepaid",
+        "title": "Prepaid Subscription",
+        "price": "$55.00",
+        "description": "Stock up and save with a prepaid pod subscription. A fixed number of premium pods delivered over time, offering great value and consistent quality.",
+        "highlight": true,
+        "features": [
+          "Bulk savings",
+          "Consistent quality",
+          "Great for offices"
+        ]
+      }
+    ]
+  }
+}

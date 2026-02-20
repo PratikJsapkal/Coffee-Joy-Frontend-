@@ -1,0 +1,38 @@
+[
+  {
+    "desc": "Absolutely love starting my day with this coffee. Smooth, rich, and aromatic every time!",
+    "image": "https://cdns.barecms.com/images/emily.webp",
+    "name": "Emily R.",
+    "rating": 5
+  },
+  {
+    "desc": "The flavor is unmatched! I feel like I have a coffee shop at home.",
+    "image": "https://cdns.barecms.com/images/david.webp",
+    "name": "David K.",
+    "rating": 4
+  },
+  {
+    "desc": "The machine is easy to use, and the coffee tastes amazing. My mornings are now my favorite part of the day!",
+    "image": "https://cdns.barecms.com/images/sophia.webp",
+    "name": "Sophia L.",
+    "rating": 5
+  },
+  {
+    "desc": "I’ve tried many coffee brands, but this one stands out. Perfect balance and aroma.",
+    "image": "https://cdns.barecms.com/images/michael.webp",
+    "name": "Michael T.",
+    "rating": 3
+  },
+  {
+    "desc": "Every sip feels like a treat. The roasted coffee is flavorful and bold without being bitter.",
+    "image": "https://cdns.barecms.com/images/olivia.webp",
+    "name": "Olivia M.",
+    "rating": 5
+  },
+  {
+    "desc": "Love the coffee pods! Quick, easy, and delicious every time.",
+    "image": "https://cdns.barecms.com/images/james.webp",
+    "name": "James H.",
+    "rating": 4
+  }
+]

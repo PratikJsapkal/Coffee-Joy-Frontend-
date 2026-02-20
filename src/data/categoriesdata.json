@@ -1,0 +1,180 @@
+[
+  {
+    "slug": "whole-bean",
+    "name": "Whole Bean Coffee",
+    "subtitle": "Freshly roasted beans for the perfect grind",
+    "heroImage": "https://cdns.barecms.com/categories/cat9.webp",
+    "level": 3
+  },
+  {
+    "slug": "ground-coffee",
+    "name": "Ground Coffee",
+    "subtitle": "Convenience without compromising flavour",
+    "heroImage": "https://cdns.barecms.com/categories/cat9.webp",
+    "level": 3
+  },
+  {
+    "slug": "single-origin",
+    "name": "Single Origin",
+    "subtitle": "Distinct flavours from unique regions",
+    "heroImage": "https://cdns.barecms.com/categories/cat9.webp",
+    "level": 3
+  },
+  {
+    "slug": "blends",
+    "name": "Blends",
+    "subtitle": "Balanced profiles crafted by our roasters",
+    "heroImage": "https://cdns.barecms.com/categories/cat13.webp",
+    "level": 3
+  },
+  {
+    "slug": "decaf",
+    "name": "Decaf",
+    "subtitle": "All the taste, none of the caffeine",
+    "heroImage": "https://cdns.barecms.com/categories/cat16.webp",
+    "level": 3
+  },
+  {
+    "slug": "coffee-pods",
+    "name": "Coffee Pods",
+    "subtitle": "Easy brewing with balanced flavour",
+    "heroImage": "https://cdns.barecms.com/categories/cat20.webp",
+    "level": 3
+  },
+  {
+    "slug": "coffee-capsules",
+    "name": "Coffee Capsules",
+    "subtitle": "Sealed freshness in every cup",
+    "heroImage": "https://cdns.barecms.com/categories/cat20.webp",
+    "level": 3
+  },
+  {
+    "slug": "Nespresso-Pods",
+    "name": "Espresso Pods",
+    "subtitle": "Intense shots, café-style crema",
+    "heroImage": "https://cdns.barecms.com/categories/cat20.webp",
+    "level": 3
+  },
+  {
+    "slug": "compatible-pods",
+    "name": "Compatible Pods",
+    "subtitle": "Works with popular pod machines",
+    "heroImage": "https://cdns.barecms.com/categories/cat20.webp",
+    "level": 3
+  },
+  {
+    "slug": "accessories",
+    "name": "Accessories",
+    "subtitle": "Essential add-ons for your coffee routine",
+    "heroImage": "https://cdns.barecms.com/images/accessories.webp",
+    "level": 1
+  },
+  {
+    "slug": "mugs",
+    "name": "Mugs",
+    "subtitle": "Serve your coffee in style",
+    "heroImage": "https://cdns.barecms.com/images/Accessories.webp",
+    "level": 3
+  },
+  {
+    "slug": "filters",
+    "name": "Filters",
+    "subtitle": "Clean brews, perfect extraction",
+    "heroImage": "https://cdns.barecms.com/images/Accessories.webp",
+    "level": 3
+  },
+  {
+    "slug": "scoops",
+    "name": "Scoops",
+    "subtitle": "Tools to craft your perfect cup",
+    "heroImage": "https://cdns.barecms.com/images/Accessories.webp",
+    "level": 3
+  },
+
+  {
+    "slug": "semi-automatic",
+    "name": "Semi-Automatic Machines",
+    "subtitle": "Control every shot like a barista",
+    "heroImage": "https://cdns.barecms.com/categories/cat24.webp",
+    "level": 3
+  },
+  {
+    "slug": "fully-automatic",
+    "name": "Fully Automatic Machines",
+    "subtitle": "Effortless brewing at the touch of a button",
+    "heroImage": "https://cdns.barecms.com/categories//cat24.webp",
+    "level": 3
+  },
+  {
+    "slug": "commercial",
+    "name": "Commercial Machines",
+    "subtitle": "Built for cafés and high-volume brewing",
+    "heroImage": "https://cdns.barecms.com/categories/cat24.webp",
+    "level": 3
+  },
+  {
+    "slug": "manual",
+    "name": "Manual Espresso Machines",
+    "subtitle": "Pure craft, total control",
+    "heroImage": "https://cdns.barecms.com/categories/cat24.webp",
+    "level": 3
+  },
+
+  {
+    "slug": "nespresso",
+    "name": "Nespresso Pods",
+    "subtitle": "Capsule convenience, premium taste",
+    "heroImage": "https://cdns.barecms.com/categories/cat20.webp",
+    "level": 3
+  },
+  {
+    "slug": "dolce-gusto",
+    "name": "Dolce Gusto Pods",
+    "subtitle": "Cafe-style drinks at home",
+    "heroImage": "https://cdns.barecms.com/categories/cat20.webp",
+    "level": 3
+  },
+  {
+    "slug": "multi-pod",
+    "name": "Multi Pod Systems",
+    "subtitle": "One machine, many possibilities",
+    "heroImage": "https://cdns.barecms.com/categories/cat20.webp",
+    "level": 3
+  },
+
+  {
+    "slug": "drip",
+    "name": "Basic Drip Machines",
+    "subtitle": "Simple, reliable everyday brewing",
+    "heroImage": "https://cdns.barecms.com/categories/cat27.webp",
+    "level": 3
+  },
+  {
+    "slug": "pour-over",
+    "name": "Pour Over Brewers",
+    "subtitle": "Precision brewing for flavour lovers",
+    "heroImage": "https://cdns.barecms.com/categories/cat25.webp",
+    "level": 3
+  },
+  { "slug": "drip", 
+  "name": "Auto Drip Machines", 
+  "subtitle": "Simple everyday brewing",
+   "heroImage": "https://cdns.barecms.com/categories/cat25.webp", 
+   "level": 3 },
+   {
+  "slug": "grinders",
+  "name": "Coffee Grinders",
+  "subtitle": "Grind fresh for maximum flavour",
+  "heroImage": "https://cdns.barecms.com/categories/cat27.webp",
+  "level": 3
+},
+   {
+  "slug": "ground-coffee",
+  "name": "Ground Coffee",
+  "subtitle": "Freshly roasted beans for the perfect grind",
+  "heroImage": "https://cdns.barecms.com/categories/cat27.webp",
+  "level": 3
+}
+
+
+]

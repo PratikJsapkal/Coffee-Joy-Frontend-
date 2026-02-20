@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+
+  /* Font variables from next/font */
+  --font-cinzel: var(--font-cinzel);
+  --font-playfair: var(--font-playfair);
+  --font-inter: var(--font-inter);
+}
+
+/* ===============================
+   TAILWIND THEME MAPPING (v4)
+   =============================== */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-cinzel: var(--font-cinzel);
+  --font-playfair: var(--font-playfair);
+  --font-sans: var(--font-inter);
+}
+
+
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-cinzel {
+  font-family: var(--font-cinzel), serif;
+}
+
+.font-playfair {
+  font-family: var(--font-playfair), serif;
+}
+
+.font-inter {
+  font-family: var(--font-inter), sans-serif;
+}
+
+/* My Account   */
+@layer components {
+  .card {
+    @apply bg-[#2a1c12] rounded-xl shadow-lg p-9 mt-5; 
+  }
+
+  .title {
+    @apply text-xl font-semibold font-cinzel mb-15 text-[rgb(228,185,154)];
+    @apply bg-[#2a1c12] rounded-xl shadow-lg p-9 mt-15; 
+  }
+
+  .title {
+    @apply text-xl font-semibold font-cinzel mb-15 text-[#f6dfcf];
+
+  }
+
+  .input {
+    @apply w-full px-4 py-3 rounded-full border border-[#d6c7bc]
+    focus:outline-none focus:ring-2 focus:ring-[#b57e4f]
+    bg-[#2a2112] transition;
+  }
+
+  .btn-primary {
+    @apply px-9 p-3 rounded-full bg-[#1f140c] text-amber-50 font-playfair font-bold
+     transition-all;
+  }
+
+  .btn-glow {
+    @apply relative overflow-hidden;
+  }
+
+  .btn-glow::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center,
+      rgba(255,255,255,0.35),
+      transparent 60%);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .btn-glow:hover::after {
+    opacity: 1;
+  }
+} 
+
+
+/* hide scrollbar but allow scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE & Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari */
+}
+
