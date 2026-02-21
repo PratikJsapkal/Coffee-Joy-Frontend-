@@ -69,10 +69,26 @@ const CategoryRow = ({ title, items, viewAllLink = "/Products" }) => {
             </p>
 
             <div className="mt-4 sm:mt-6 flex items-center justify-between">
-              <span className="font-medium text-black group-hover:text-[#F3E0C8] text-sm sm:text-base">
-                 ₹{item.weights?.[0]?.price}
-              </span>
+              <div>
+                  {item.weights[0].discount_price ? (
+                        <>
+                          {/* Discount Price */}
+                          <span className="text-md font-medium text-black">
+                            ₹{item.weights[0].discount_price}
+                          </span>
 
+                          {/* Original Price with line-through */}
+                          <p className="line-through text-gray-500 text-sm">
+                            ₹{item.weights[0].price}
+                          </p>
+                        </>
+                      ) : (
+                        /* If no discount price, show only original price */
+                        <span className="text-md font-semibold text-black">
+                          ₹{item.weights[0].price}
+                        </span>
+                      )}
+              </div>
               <button
                 onClick={(e) => {
                   e.preventDefault()

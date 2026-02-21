@@ -27,10 +27,10 @@ export default function Footer() {
     {
       title: "PRODUCTS",
       links: [
-        { name: "Whole Beans", href: "#" },
-        { name: "Ground Coffee", href: "#" },
-        { name: "Capsules & Pods", href: "#" },
-        { name: "Instant Coffee", href: "#" },
+        { name: "Whole Beans", slug: "whole-bean" },
+        { name: "Ground Coffee", slug: "ground-coffee" },
+        { name: "Capsules & Pods", slug: "single-origin" },
+        { name: "Decaf", slug: "decaf" },
       ],
     },
     {
@@ -155,7 +155,7 @@ export default function Footer() {
                   {section.links.map((link) => (
                     <li key={link.name}>
                       <Link
-                        href={link.href}
+                        href={`/navbarproducts/${link.slug}`}
                         className="block py-1 hover:text-amber-300 transition"
                       >
                         {link.name}

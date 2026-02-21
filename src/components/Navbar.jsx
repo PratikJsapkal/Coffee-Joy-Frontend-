@@ -25,26 +25,23 @@ export default function Navbar() {
   const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const {user ,authChecked} = useSelector((state)=>state.auth)
+  const { user, authChecked } = useSelector((state) => state.auth);
 
-  
-
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const router = useRouter();
 
-//search bar func
- const onChange = (e) => {
-  const value = e.target.value;
-  setSearchValue(value);
-  dispatch(setSearchQuery(value));
-};
+  //search bar func
+  const onChange = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    dispatch(setSearchQuery(value));
+  };
 
-const onSubmit = (e) => {
-  e.preventDefault();
-  router.push("/Products");
-  setSearchOpen(false);
-};
-
+  const onSubmit = (e) => {
+    e.preventDefault();
+    router.push("/Products");
+    setSearchOpen(false);
+  };
 
   /* SCROLL EFFECT */
   useEffect(() => {
@@ -61,16 +58,15 @@ const onSubmit = (e) => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
- const handleProfileButton = ()=>{
-    if(!authChecked) return ;
+  const handleProfileButton = () => {
+    if (!authChecked) return;
 
-   if (user){
-    router.push("/account")
-  }
-  else{
-    router.push('/Auth/login')
-  }
- }
+    if (user) {
+      router.push("/account");
+    } else {
+      router.push("/Auth/login");
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 z-50 w-full ">
@@ -83,7 +79,7 @@ const onSubmit = (e) => {
             "bg-black/30 backdrop-blur-lg": scrollState === "mid",
             "bg-black/70 backdrop-blur-2xl border-b border-white/20 shadow-lg":
               scrollState === "past",
-          }
+          },
         )}
       >
         {/* LOGO */}
@@ -105,11 +101,12 @@ const onSubmit = (e) => {
                     {link.dropdown.map((col, i) => (
                       <DropdownColumn key={i} title={col.title}>
                         {col.items.map((item, j) => (
- <DropdownItem key={j} label={item.label} slug={item.slug} />
-
-))}
-
-                        
+                          <DropdownItem
+                            key={j}
+                            label={item.label}
+                            slug={item.slug}
+                          />
+                        ))}
                       </DropdownColumn>
                     ))}
                   </div>
@@ -121,10 +118,8 @@ const onSubmit = (e) => {
 
         {/* ================= RIGHT ICONS ================= */}
         <div className="relative flex items-center text-white">
-
           {/* ========== MOBILE ICONS (ANIMATED) ========== */}
           <div className="flex md:hidden items-center gap-4">
-
             {/* 🔍 Search */}
             <motion.button
               whileTap={{ scale: 0.9 }}
@@ -134,14 +129,14 @@ const onSubmit = (e) => {
               className={clsx(
                 "p-2 rounded-full transition-all duration-300",
                 searchOpen &&
-                  "bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.35)]"
+                  "bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.35)]",
               )}
             >
               <FiSearch className="text-white text-xl" />
             </motion.button>
 
             {/* 👤 Login */}
-            
+
             <motion.div
               whileTap={{ scale: 0.9 }}
               whileHover={{ scale: 1.05 }}
@@ -149,9 +144,7 @@ const onSubmit = (e) => {
               transition={{ type: "spring", stiffness: 300, damping: 18 }}
               className="p-2 rounded-full hover:bg-white/10 hover:shadow-[0_0_12px_rgba(255,255,255,0.25)]"
             >
-              
-                <AiOutlineUser className="text-white text-xl" />
-              
+              <AiOutlineUser className="text-white text-xl" />
             </motion.div>
 
             {/* 🛒 Cart */}
@@ -168,34 +161,32 @@ const onSubmit = (e) => {
 
           {/* DESKTOP ICONS (UNCHANGED) */}
           <div className="hidden md:flex items-center gap-8 ml-6">
-
             {/* Desktop Search */}
             <div
               className={clsx(
                 "flex items-center px-2 py-2 rounded-full border transition-all duration-300 overflow-hidden",
                 searchOpen
                   ? "w-44 bg-black/60 border-white/40"
-                  : "w-10 bg-transparent border-transparent"
+                  : "w-10 bg-transparent border-transparent",
               )}
             >
               <button onClick={() => setSearchOpen((p) => !p)}>
                 <FiSearch className="text-white hover:scale-140 transition cursor-pointer" />
               </button>
 
-         {searchOpen && (
-  <form onSubmit={onSubmit} className="w-full">
-    <input
-      autoFocus
-      type="text"
-      value={searchValue}
-      onChange={onChange}
-      placeholder="Search Coffee, Beans..."
-      className="bg-transparent outline-none text-sm text-white placeholder-white/50 w-full"
-      onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
-    />
-  </form>
-)}
-
+              {searchOpen && (
+                <form onSubmit={onSubmit} className="w-full">
+                  <input
+                    autoFocus
+                    type="text"
+                    value={searchValue}
+                    onChange={onChange}
+                    placeholder="Search Coffee, Beans..."
+                    className="bg-transparent outline-none text-sm text-white placeholder-white/50 w-full"
+                    onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
+                  />
+                </form>
+              )}
             </div>
 
             <button onClick={handleProfileButton}>
@@ -232,18 +223,17 @@ const onSubmit = (e) => {
             w-[90vw] max-w-sm bg-black/80 backdrop-blur-xl font-playfair
             border border-white/20 rounded-2xl px-3 py-3 shadow-2xl md:hidden"
           >
-           <form onSubmit={onSubmit}>
-  <input
-    autoFocus
-    type="text"
-    value={searchValue}
-    onChange={onChange}
-    placeholder="Search products..."
-    className="bg-transparent outline-none text-sm text-white placeholder-white/50 w-full text-center"
-    onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
-  />
-</form>
-
+            <form onSubmit={onSubmit}>
+              <input
+                autoFocus
+                type="text"
+                value={searchValue}
+                onChange={onChange}
+                placeholder="Search products..."
+                className="bg-transparent outline-none text-sm text-white placeholder-white/50 w-full text-center"
+                onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
+              />
+            </form>
           </motion.div>
         )}
       </AnimatePresence>
@@ -254,12 +244,9 @@ const onSubmit = (e) => {
       {/* MOBILE MENU */}
       <div
         className={clsx(
-
-
           "fixed inset-y-0 right-0  w-[85%] max-w-sm bg-black text-white transform transition-transform duration-500 md:hidden overflow-x-hidden will-change-transform",
 
-      
-          menuOpen ? "translate-x-0" : "translate-x-full"
+          menuOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
         {/* HEADER */}
@@ -282,9 +269,7 @@ const onSubmit = (e) => {
               <div key={index} className="border-b border-white/10 pb-4">
                 <button
                   className="flex items-center justify-between w-full text-left text-lg font-cinzel"
-                  onClick={() =>
-                    setOpenMobileDropdown(isOpen ? null : index)
-                  }
+                  onClick={() => setOpenMobileDropdown(isOpen ? null : index)}
                 >
                   {link.label}
                   {link.dropdown && (
@@ -309,16 +294,14 @@ const onSubmit = (e) => {
                           <ul className="space-y-2">
                             {col.items.map((item, j) => (
                               <li key={j}>
- <Link
-  href={`/Navbarproduct/${item.slug}`}
-  onClick={() => setMenuOpen(false)}
-  className="block text-white/80 hover:text-white transition"
->
-  {item.label}
-</Link>
-
-</li>
-
+                                <Link
+                                  href={`/navbarproducts/${item.slug}`}
+                                  onClick={() => setMenuOpen(false)}
+                                  className="block text-white/80 hover:text-white transition"
+                                >
+                                  {item.label}
+                                </Link>
+                              </li>
                             ))}
                           </ul>
                         </div>
@@ -344,7 +327,7 @@ function DropdownContainer({ children, scrollState }) {
         "fixed top-[88px] left-12 right-12 rounded-2xl z-40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all",
         scrollState === "top"
           ? "bg-black/30 backdrop-blur-lg"
-          : "bg-black/70 backdrop-blur-2xl border border-white/20"
+          : "bg-black/70 backdrop-blur-2xl border border-white/20",
       )}
     >
       {children}
@@ -355,11 +338,8 @@ function DropdownContainer({ children, scrollState }) {
 function DropdownColumn({ title, children }) {
   return (
     <div>
-     
-
       <h4 className="text-2xl mb-5 text-white">{title}</h4>
       <ul className="space-y-3 text-white/80">{children}</ul>
-    
     </div>
   );
 }
@@ -374,8 +354,6 @@ function DropdownItem({ label, slug }) {
     </Link>
   );
 }
-
-
 
 function NavLink({ href, children }) {
   return (

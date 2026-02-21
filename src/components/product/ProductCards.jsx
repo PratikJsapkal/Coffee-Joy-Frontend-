@@ -1,8 +1,22 @@
-import React from "react"
-import Image from "next/image"
-import Link from "next/link"
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { AddToCartThunk } from "@/redux/features/cartSlice"
+import { useDispatch } from "react-redux"
 
 const ProductCard = ({ product }) => {
+
+  const dispatch = useDispatch()
+  
+  
+    const handleAddToCart =(product)=>{
+      dispatch(AddToCartThunk({
+        product_id : product.id,
+        quantity: product.qty,
+        weight_kg:product.weights[0].weight_kg
+      }))
+    }
+  
   return (
     <Link
       href={`/Products/${product.slug}`}
@@ -16,7 +30,10 @@ const ProductCard = ({ product }) => {
       {/* IMAGE */}
       <div className="relative w-full h-36 sm:h-44 mb-4 sm:mb-6">
         <Image
-          src={product.imageSrc || "https://cdns.barecms.com/images/product-placeholder.png"}
+          src={
+            product.imageSrc ||
+            "https://cdns.barecms.com/images/product-placeholder.png"
+          }
           alt={product.name}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
@@ -35,13 +52,33 @@ const ProductCard = ({ product }) => {
       </p>
 
       {/* FOOTER */}
-      <div className="mt-auto flex items-center justify-between">
-        <span className="text-lg font-semibold text-black">
-          ₹{product.price}
-        </span>
+      <div className="mt-auto flex gap-2 items-center justify-between">
+        <div>
+          {product.weights[0].discount_price ? (
+            <>
+              {/* Discount Price */}
+              <span className="text-md font-medium text-black">
+                ₹{product.weights[0].discount_price}
+              </span>
+
+              {/* Original Price with line-through */}
+              <p className="line-through text-gray-500 text-sm">
+                ₹{product.weights[0].price}
+              </p>
+            </>
+          ) : (
+            /* If no discount price, show only original price */
+            <span className="text-md font-semibold text-black">
+              ₹{product.weights[0].price}
+            </span>
+          )}
+        </div>
 
         <button
-          onClick={(e) => e.preventDefault()}
+          onClick={(e) =>{
+            e.preventDefault()
+            handleAddToCart(product)
+          }}
           className="
             px-6 py-2 rounded-full
             bg-black text-white
@@ -54,7 +91,7 @@ const ProductCard = ({ product }) => {
         </button>
       </div>
     </Link>
-  )
-}
+  );
+};
 
-export default ProductCard
+export default ProductCard;
