@@ -1,6 +1,12 @@
 "use client";
 
 import { useState ,useEffect } from "react";
+
+// zod imports
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signupSchema } from "@/validators/authSchemas";
+
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -24,6 +30,16 @@ export default function LoginPage() {
     password:""
   })
 
+  // zod resolver implementations
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(signupSchema),
+    defaultValues: fromData,
+  });
+
   const handleOnclick = (e)=>{
     const {name , value}=e.target
     setFromData({...fromData , [name] : value})
@@ -31,9 +47,10 @@ export default function LoginPage() {
 
   console.log(fromData)
 
-  const handleSignup =()=>{
-    dispatch(singupThunk(fromData))
-  }
+  // handles va
+  const handleSignup = (data) => {
+    dispatch(singupThunk(data));
+  };
 
    useEffect(() => {
     if (otpVerified) {
@@ -45,7 +62,7 @@ if(otpSent){
   return <Otp email={fromData.email} />
 } 
   return (
-     <motion.div
+    <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
@@ -65,7 +82,6 @@ if(otpSent){
 
       {/* MAIN CARD */}
       <div className="flex w-full max-w-5xl h-full md:h-[85vh] rounded-3xl overflow-hidden shadow-2xl">
-
         {/* LEFT IMAGE */}
         <motion.div
           initial={{ x: -60, opacity: 0 }}
@@ -109,68 +125,94 @@ if(otpSent){
           >
             Sign Up
           </motion.h2>
-
-          {/* FULL NAME */}
-          <motion.input
-            variants={{
-              hidden: { y: 15, opacity: 0 },
-              visible: { y: 0, opacity: 1 },
-            }}
-            type="text"
-            name="name"
-            value={fromData.name}
-            onChange={handleOnclick}
-            placeholder="Name"
-            className="w-full mb-6 bg-transparent border-b border-gray-300
+          <form onSubmit={handleSubmit(handleSignup)}>
+            {/* FULL NAME */}
+            <motion.input
+              variants={{
+                hidden: { y: 15, opacity: 0 },
+                visible: { y: 0, opacity: 1 },
+              }}
+              {...register("name")}
+              type="text"
+              name="name"
+              value={fromData.name}
+              onChange={handleOnclick}
+              placeholder="Name"
+              className="w-full mb-6 bg-transparent border-b border-gray-300
                        focus:border-amber-500 focus:outline-none py-2
                        placeholder-gray-400 font-playfair text-white"
-          />
+            />
+            {errors.name && (
+              <p className="text-red-400 text-sm -mt-4 mb-4">
+                {errors.name.message}
+              </p>
+            )}
 
-          {/* EMAIL */}
-          <motion.input
-            variants={{
-              hidden: { y: 15, opacity: 0 },
-              visible: { y: 0, opacity: 1 },
-            }}
-            type="email"
-            name="email"
-            value={fromData.email}
-            onChange={handleOnclick}
-            placeholder="Email"
-            className="w-full mb-6 bg-transparent border-b border-white/70
-             focus:border-amber-500 focus:outline-none py-2 placeholder-gray-400 font-playfair"
-          />
-
-          {/* PASSWORD */}
-          <motion.div className="relative mb-6">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={fromData.password}
-              placeholder="Password"
+            {/* EMAIL */}
+            <motion.input
+              variants={{
+                hidden: { y: 15, opacity: 0 },
+                visible: { y: 0, opacity: 1 },
+              }}
+              {...register("email")}
+              type="email"
+              name="email"
+              value={fromData.email}
               onChange={handleOnclick}
-              className="w-full bg-transparent border-b border-gray-300
+              placeholder="Email"
+              className="w-full mb-6 bg-transparent border-b border-white/70
+             focus:border-amber-500 focus:outline-none py-2 placeholder-gray-400 font-playfair"
+            />
+            {errors.email && (
+              <p className="text-red-400 text-sm -mt-4 mb-4">
+                {errors.email.message}
+              </p>
+            )}
+
+            {/* PASSWORD */}
+            <motion.div className="relative mb-6">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                {...register("password")}
+                value={fromData.password}
+                placeholder="Password"
+                onChange={handleOnclick}
+                className="w-full bg-transparent border-b border-gray-300
                          focus:border-amber-500 focus:outline-none py-2
                          placeholder-gray-400 pr-10 font-playfair text-white"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="cursor-pointer absolute right-2 top-2.5 text-gray-400 hover:text-white"
-            >
-              {showPassword ? <FaRegEyeSlash size={20} /> : <FaRegEye size={20} />}
-            </button>
-          </motion.div>
-          <motion.button
-            onClick={handleSignup} disabled={loading}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            className="w-full py-3 rounded-full bg-gradient-to-r
+              />
+              {errors.password && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="cursor-pointer absolute right-2 top-2.5 text-gray-400 hover:text-white"
+              >
+                {showPassword ? (
+                  <FaRegEyeSlash size={20} />
+                ) : (
+                  <FaRegEye size={20} />
+                )}
+              </button>
+            </motion.div>
+            <motion.button
+            type="submit"
+              onClick={handleSignup}
+              disabled={loading}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              className="w-full py-3 rounded-full bg-gradient-to-r
                        from-amber-600 to-orange-900
                        font-playfair font-bold shadow-lg text-white cursor-pointer"
-          >
-            {loading ? "Sending OTP" : "Create new account"}
-          </motion.button>
+            >
+              {loading ? "Sending OTP" : "Create new account"}
+            </motion.button>
+          </form>
 
           {/* SOCIAL LOGIN */}
           <motion.div
@@ -195,18 +237,16 @@ if(otpSent){
               >
                 <FcGoogle size={22} />
               </motion.button>
-
             </div>
 
-             <div className="mt-8 text-center">
-          <Link
-            href="/Auth/login"
-            className="text-sm text-gray-300 hover:text-amber-400 hover:underline"
-          >
-            ← Back to Sign In
-          </Link>
-        </div>
-        
+            <div className="mt-8 text-center">
+              <Link
+                href="/Auth/login"
+                className="text-sm text-gray-300 hover:text-amber-400 hover:underline"
+              >
+                ← Back to Sign In
+              </Link>
+            </div>
           </motion.div>
         </motion.div>
       </div>

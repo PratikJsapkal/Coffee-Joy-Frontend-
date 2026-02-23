@@ -1,6 +1,12 @@
 "use client";
 
 import { useState , useEffect } from "react";
+
+// zod imports
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "@/validators/authSchemas";
+
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -23,11 +29,24 @@ export default function LoginPage() {
   const dispatch = useDispatch()
   const {user , loading , error } = useSelector((state)=>state.auth)
 
+  // zod resolver implementations
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: fromData,
+  });
+  
   const handleOnChnage = (e)=>{
     const {name , value} = e.target
     setFromData({...fromData , [name]: value})
   }
 
+  const handleLogin = (data) => {
+    dispatch(loginThunk(data));
+  };
 
  useEffect(() => {
   console.log("User changed:", user);
@@ -112,11 +131,13 @@ export default function LoginPage() {
             Sign In
           </motion.h1>
 
+            <form onSubmit={handleSubmit(handleLogin)}>
           <motion.input
             variants={{
               hidden: { y: 15, opacity: 0 },
               visible: { y: 0, opacity: 1 },
             }}
+            {...register("email")}
             type="email"
             value={fromData.email}
             name="email"
@@ -136,6 +157,7 @@ export default function LoginPage() {
             className="relative mb-8"
           >
             <input
+            {...register("password")}
               type={showPassword ? "text" : "password"}
               value={fromData.password}
               name="password"
@@ -156,6 +178,7 @@ export default function LoginPage() {
 
           {/* SIGN IN BUTTON */}
           <motion.button
+          type="submit"
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
             onClick={()=> dispatch(loginThunk(fromData))}
@@ -165,7 +188,7 @@ export default function LoginPage() {
           >
             Sign In
           </motion.button>
-
+            </form>
           {/* LINKS */}
           <div className="text-center mt-6">
             <Link href="/Auth/forgot-password" className="text-sm hover:underline text-white">
