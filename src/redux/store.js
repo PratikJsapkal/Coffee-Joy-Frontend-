@@ -11,6 +11,7 @@ import cheakoutRouter from "./features/cheakoutSlice"
 import subscriptionReducer from "./features/subscriptionSlice";
 import ordersReducer from "./features/orderSlice"
 import couponReducer from "./features/couponSlice";
+import uiReducer from "./features/uiSlice";
 
 
 const store = configureStore({
@@ -27,6 +28,7 @@ const store = configureStore({
           subscription: subscriptionReducer,
           orders : ordersReducer,
           coupon: couponReducer,
+          ui : uiReducer,
           
     }
 })

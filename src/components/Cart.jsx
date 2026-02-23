@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import AddressPopup from "@/components/checkout/AddressPopup";
 import { showAddress } from "@/api/shippingApi";
 import { cheakoutThunk } from "@/redux/features/cheakoutSlice";
+import { closeCart } from "@/redux/features/uiSlice";
 
 export default function Cart({ onClose }) {
   const router = useRouter();
@@ -71,6 +72,7 @@ export default function Cart({ onClose }) {
   }
 };
 
+  const cartOpen = useSelector((state)=>state.ui.cartOpen)
 
   return (
     <>
@@ -82,7 +84,7 @@ export default function Cart({ onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b">
           <h2 className="text-[25px] font-medium tracking-wide text-white font-cinzel">CART</h2>
-          <FiX className="cursor-pointer text-xl hover:rotate-90 transition" onClick={onClose} />
+          <FiX className="cursor-pointer text-xl hover:rotate-90 transition" onClick={()=>dispatch(closeCart())} />
         </div>
 
         {/* Body */}

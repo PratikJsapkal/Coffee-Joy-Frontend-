@@ -2,19 +2,23 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AddToCartThunk } from "@/redux/features/cartSlice"
-import { useDispatch } from "react-redux"
+import { useDispatch ,useSelector } from "react-redux"
+import { openCart } from "@/redux/features/uiSlice";
 
 const ProductCard = ({ product }) => {
 
   const dispatch = useDispatch()
+  const cartOpen = useSelector((state)=>state.ui.cartOpen)
   
   
-    const handleAddToCart =(product)=>{
-      dispatch(AddToCartThunk({
+    const handleAddToCart = async (product)=>{
+    await dispatch(AddToCartThunk({
         product_id : product.id,
         quantity: product.qty,
         weight_kg:product.weights[0].weight_kg
-      }))
+      })).unwrap()
+
+      dispatch(openCart())
     }
   
   return (

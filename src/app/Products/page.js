@@ -18,6 +18,7 @@ import FilterSidebar from "@/components/product/Filters/FilterSidebar";
 import ProductHero from "@/components/product/ProductHero";
 import { AddToCartThunk } from "@/redux/features/cartSlice";
 import { FaFilter } from "react-icons/fa";
+import { openCart } from "@/redux/features/uiSlice";
 
 function PageContent() {
   const dispatch = useDispatch();
@@ -51,14 +52,21 @@ function PageContent() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
-  const handleAddToCart = (item) => {
-    dispatch(
+  //to open the cart 
+
+  const cartOpen = useSelector((state)=>state.ui.cartOpen)
+
+  const handleAddToCart = async (item) => {
+    await dispatch(
       AddToCartThunk({
         product_id: item.id,
         quantity: item.qty,
         weight_kg: item.weights[0].weight_kg,
       }),
-    );
+    ).unwrap();
+
+   
+      dispatch(openCart())
   };
 
   useEffect(() => {
@@ -70,6 +78,7 @@ function PageContent() {
       dispatch(clearSearch());
     }
   }, [searchParams, dispatch]);
+
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
 

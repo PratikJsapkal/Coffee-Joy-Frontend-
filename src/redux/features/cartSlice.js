@@ -92,6 +92,7 @@ const cartSlice = createSlice({
           state.products.cart.push(action.payload);
         }
         toast.success("Product added to cart");
+        
       })
       .addCase(AddToCartThunk.rejected, (state, action) => {
         state.loading = false;
@@ -140,7 +141,6 @@ const cartSlice = createSlice({
          (  item) => item.cart_item_id !== action.payload
       );
 })
-
 
       .addCase(deleteCartThunk.rejected , (state , action )=>{
         state.loading = false

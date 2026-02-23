@@ -16,6 +16,7 @@ import { cheakoutThunk } from "@/redux/features/cheakoutSlice";
 import { fetchProducts } from "@/redux/features/productSlice";
 import ProductCard from "@/components/product/ProductCards";
 import { useMemo } from "react";
+import { openCart } from "@/redux/features/uiSlice";
 
 
 
@@ -28,7 +29,8 @@ export default function ProductPage() {
   const [qty, setQty] = useState(1);
   const [showAddressPopup, setShowAddressPopup] = useState(false);
   const [selectedWeightIndex, setSelectedWeightIndex] = useState(0);
-
+  const cartOpen = useSelector((state)=>state.ui.cartOpen)
+  
 
 
 
@@ -80,16 +82,19 @@ const relatedProducts = useMemo(() => {
   if (!currentProduct) return null;
 
   
+   // eslint-disable-next-line react-hooks/rules-of-hooks
 
-  const handleAddToCart = () => {
-    dispatch(
+  const handleAddToCart =  async() => {
+    await dispatch(
       AddToCartThunk({
         product_id:product.id,
         quantity: qty,
          weight_kg: selectedWeight?.weight_kg,
         // weight_kg :product.weights[0].weight_kg,
       })
-    );
+    ).unwrap()
+
+    dispatch(openCart())
   };
 
   const handleBuyNow = async () => {

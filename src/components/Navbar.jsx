@@ -17,13 +17,13 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setSearchQuery } from "@/redux/features/searchSlice";
 import { useSelector } from "react-redux";
+import { closeCart, openCart } from "@/redux/features/uiSlice";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrollState, setScrollState] = useState("top");
   const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
-  const [cartOpen, setCartOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const { user, authChecked } = useSelector((state) => state.auth);
 
@@ -67,6 +67,8 @@ export default function Navbar() {
       router.push("/Auth/login");
     }
   };
+
+  const cartOpen = useSelector((state)=>state.ui.cartOpen)
 
   return (
     <nav className="fixed top-0 left-0 z-50 w-full ">
@@ -152,7 +154,7 @@ export default function Navbar() {
               whileTap={{ scale: 0.9 }}
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300, damping: 18 }}
-              onClick={() => setCartOpen(true)}
+              onClick={() => dispatch(openCart())}
               className="p-2 rounded-full hover:bg-white/10 hover:shadow-[0_0_12px_rgba(255,255,255,0.25)]"
             >
               <HiOutlineShoppingBag className="text-white text-xl" />
@@ -194,7 +196,7 @@ export default function Navbar() {
             </button>
 
             <button
-              onClick={() => setCartOpen(true)}
+              onClick={() => dispatch(openCart())}
               className="text-xl hover:scale-140 transition cursor-pointer hover:text-shadow-amber-50"
             >
               <HiOutlineShoppingBag />
@@ -239,7 +241,7 @@ export default function Navbar() {
       </AnimatePresence>
 
       {/* CART DRAWER */}
-      {cartOpen && <Cart onClose={() => setCartOpen(false)} />}
+      {cartOpen && <Cart onClose={() => dispatch(closeCart())} />}
 
       {/* MOBILE MENU */}
       <div
