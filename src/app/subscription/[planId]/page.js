@@ -188,7 +188,7 @@ price: priceBreakdown.finalPerDelivery
         <div className="pointer-events-none absolute top-0 -left-0 md:-top-8 md:-left-62 w-[60%] md:w-[35%] z-[20] hidden lg:block">
 
             <img
-              src="/images/bean13.webp"
+              src="https://cdns.barecms.com/images/bean13.webp"
               alt="fufuyguyg"
               className="w-full max-w-none rotate-180"
             />
@@ -197,7 +197,7 @@ price: priceBreakdown.finalPerDelivery
           {/* Decorative beans – bottom right */}
           <div className="pointer-events-none absolute inset-0 z-1 hidden lg:block">
             <img
-              src="/images/beans14.webp"
+              src="https://cdns.barecms.com/images/beans14.webp"
               alt="something"
               className="absolute md:-bottom-0 lg:right-0 md:w-[40%]  w-[105%] right-0 max-w-none opacity-80 sepia
               hue-rotate-[18deg]

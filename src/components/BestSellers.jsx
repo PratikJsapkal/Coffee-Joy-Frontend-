@@ -32,7 +32,15 @@ const BestSellers = () => {
         <img
           src="https://cdns.barecms.com/images/beans3.webp"
           alt=""
-          className="absolute -top-4 -left-24 w-[30%] max-w-none rotate-180"
+          className="
+            absolute
+            top-0 sm:-top-4
+            left-[-10%] sm:left-[-6rem]
+            w-[50%] sm:w-[30%]
+            max-w-none
+            rotate-[180deg]
+            opacity-90
+          "
         />
       </div>
 
@@ -41,7 +49,7 @@ const BestSellers = () => {
         <img
           src="https://cdns.barecms.com/images/beans3.webp"
           alt=""
-          className="absolute -bottom-6 -right-24 w-[30%] max-w-none"
+        className="absolute bottom-4 sm:-bottom-6 right-[-5%] sm:right-[-6rem] w-[50%] sm:w-[30%] max-w-none opacity-90"
         />
       </div>
 
