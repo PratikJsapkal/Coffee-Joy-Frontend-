@@ -28,9 +28,11 @@ export default function NavbarProductPage() {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const heroCategory = categoriesData.find(
-    (cat) => cat.slug === category
-  );
+const heroCategory = categoriesData.find(
+  (cat) =>
+    cat.slug?.toLowerCase().trim() ===
+    category?.toLowerCase().trim()
+);
 
   if (loading) return <p className="p-6">Loading...</p>;
   if (error) return <p className="p-6 text-red-500">{error}</p>;
@@ -40,7 +42,7 @@ export default function NavbarProductPage() {
       <ProductHero 
         title={heroCategory?.name || "Products"}
         subtitle={heroCategory?.subtitle || "Explore our collection"}
-        image={heroCategory?.heroImage || "https://cdns.barecms.com/images/category-default.jpg"}
+        image={heroCategory?.heroImage || "/images/category-default.webp"}
       />
 
       <section className="bg-[#24160E] pt-10 pb-10  ">
@@ -50,7 +52,7 @@ export default function NavbarProductPage() {
     ) : (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {products.map((product) => {
-          const images = normalizeImages(product.images);
+          const images = normalizeImages(product.images || product.image);
           const imageSrc =
             getValidImage(images?.[0]) || "/images/product-placeholder.png";
 

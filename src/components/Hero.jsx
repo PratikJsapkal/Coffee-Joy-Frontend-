@@ -26,7 +26,7 @@ export default function Hero() {
       {/* MOBILE BACKGROUND VIDEO */}
       <div className="absolute inset-0 z-0 md:hidden">
         <video
-          src="/images/coffeevideo.mp4.mp4"
+          src="https://cdns.barecms.com/images/coffeevideo.mp4.mp4"
           autoPlay
           muted
           loop
@@ -46,7 +46,7 @@ export default function Hero() {
           <p className="
             inline-flex items-center
             uppercase tracking-widest text-white/90 px-5 py-2.5 rounded-full
-            md:w-55 md:h-10 w-55 h-10 ml-10
+            md:w-55 md:h-10 w-55 h-10 ml-10 md:-ml-2
             bg-white/10 backdrop-blur-xl
             border border-white/20
             shadow-lg
