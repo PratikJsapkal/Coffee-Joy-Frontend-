@@ -16,7 +16,8 @@ import { cheakoutThunk } from "@/redux/features/cheakoutSlice";
 import { fetchProducts } from "@/redux/features/productSlice";
 import ProductCard from "@/components/product/ProductCards";
 import { useMemo } from "react";
-import { openCart } from "@/redux/features/uiSlice";
+import ProductReviewsSection from "@/components/product/ProductReviewsSection"
+
 
 
 
@@ -29,13 +30,17 @@ export default function ProductPage() {
   const [qty, setQty] = useState(1);
   const [showAddressPopup, setShowAddressPopup] = useState(false);
   const [selectedWeightIndex, setSelectedWeightIndex] = useState(0);
-  const cartOpen = useSelector((state)=>state.ui.cartOpen)
-  
 
 
 
-const { data: products, currentProduct, loading, error } =
+
+const { data, currentProduct, loading, error } =
   useSelector((state) => state.product);
+
+// Make it work whether API returns array OR object
+const products = Array.isArray(data)
+  ? data
+  : data?.products || [];
 
 
   const product = currentProduct;
@@ -54,24 +59,29 @@ const selectedWeight = hasWeights
   const imageSrc =
     product
       ? getValidImage(images?.[0]) ||
-        "https://cdns.barecms.com/images/product-placeholder.png"
-      : "https://cdns.barecms.com/images/product-placeholder.png";
+        "/images/product-placeholder.png"
+      : "/images/product-placeholder.png";
+
 const relatedProducts = useMemo(() => {
-  if (!product || !products?.length) return [];
+  if (!currentProduct || !products.length) return [];
 
   return products
-    .filter(
-      (p) =>
-        p.categoryLevel2?.toLowerCase() ===
-          product.categoryLevel2?.toLowerCase() &&
-        p.slug !== product.slug
+    .filter((p) =>
+      p.category_level_1 &&
+      currentProduct.category_level_1 &&
+      p.category_level_1.toLowerCase() ===
+        currentProduct.category_level_1.toLowerCase() &&
+      p.id !== currentProduct.id
     )
     .slice(0, 4);
-}, [products, product]);
+}, [products, currentProduct]);
+
+
   useEffect(() => {
     if (slug) dispatch(fetchProductBySlug(slug));
     dispatch(fetchProducts());
   }, [slug, dispatch]);
+
 
   if (loading)
     return <div className="mt-40 text-center text-[#c7a17a]">Loading...</div>;
@@ -81,20 +91,19 @@ const relatedProducts = useMemo(() => {
 
   if (!currentProduct) return null;
 
-  
-   // eslint-disable-next-line react-hooks/rules-of-hooks
 
-  const handleAddToCart =  async() => {
-    await dispatch(
+
+  
+
+  const handleAddToCart = () => {
+    dispatch(
       AddToCartThunk({
         product_id:product.id,
         quantity: qty,
          weight_kg: selectedWeight?.weight_kg,
         // weight_kg :product.weights[0].weight_kg,
       })
-    ).unwrap()
-
-    dispatch(openCart())
+    );
   };
 
   const handleBuyNow = async () => {
@@ -140,7 +149,7 @@ const relatedProducts = useMemo(() => {
         <div className="pointer-events-none absolute top-0 -left-0 md:-top-8 md:-left-55 w-[60%] md:w-[35%] z-[20] hidden lg:block">
 
             <img
-              src="https://cdns.barecms.com/images/bean13.webp"
+              src="/images/bean13.webp"
               alt="fufuyguyg"
               className="w-full max-w-none rotate-180"
             />
@@ -149,7 +158,7 @@ const relatedProducts = useMemo(() => {
           {/* Decorative beans – bottom right */}
           <div className="pointer-events-none absolute inset-0 z-[0] hidden lg:block">
             <img
-              src="https://cdns.barecms.com/images/beans14.webp"
+              src="/images/beans14.webp"
               alt="something"
               className="absolute md:-bottom-0 lg:right-0 md:w-[35%]  w-[105%] right-0 max-w-none opacity-80 sepia
               hue-rotate-[18deg]
@@ -158,7 +167,7 @@ const relatedProducts = useMemo(() => {
             />
           </div>
         {/* ================= LEFT : IMAGE CARD ================= */}
-        <div className="lg:w-[45%] relative overflow-hidden flex justify-center items-center md:py-17 py-12 md:pr-8 ">
+        <div className="lg:w-[45%] relative overflow-hidden flex justify-center items-center md:py-17 py-12 md:pr-8 md:pt-22 ">
 
           {/* Desktop Image */}
           <div className="hidden lg:flex flex-col items-center justify-center gap-8
@@ -222,7 +231,7 @@ const relatedProducts = useMemo(() => {
         </div>
 
         {/* ================= RIGHT : PRODUCT DETAILS ================= */}
-        <div className="lg:w-[50%]  w-auto px-6 lg:px-16  flex flex-col justify-between relative z-[10]  md:pt-8 pt-0 pb-6">
+        <div className="lg:w-[50%]  w-auto px-6 lg:px-16  flex flex-col justify-between relative z-[10]  md:pt-20 pt-0 pb-6">
 
           <div>
             {product.categoryLevel3 && (
@@ -260,14 +269,14 @@ const relatedProducts = useMemo(() => {
   </div>
 
   {product?.is_subscribable && (
-    <motion.button
-      whileTap={{ scale: 0.95 }}
-      className="cursor-pointer px-6 py-1.5 text-md font-semibold rounded-full bg-[#c7a17a] text-black hover:bg-[#d6ba9e] transition"
-    >
-      Subscribe & Save !
-    </motion.button>
-  )}
-
+  <motion.button
+    whileTap={{ scale: 0.95 }}
+    onClick={() => router.push("/subscription")}
+    className="cursor-pointer px-6 py-1.5 text-md font-semibold rounded-full bg-[#c7a17a] text-black hover:bg-[#d6ba9e] transition"
+  >
+    Subscribe & Save !
+  </motion.button>
+)}
 </div>
 {/* Weight Selector */}
 {hasMultipleWeights && (
@@ -376,11 +385,15 @@ const relatedProducts = useMemo(() => {
       </div>
 
 
+{product?.id && (
+  <ProductReviewsSection productId={product.id} />
+)}
+
       
 
      {/* ================= RELATED PRODUCTS SECTION ================= */}
 {relatedProducts.length > 0 && (
-  <section className="bg-[#1a120c] py-20">
+  <section className="bg-[#1a120c] py-20 ">
     <div className="max-w-7xl mx-auto px-6 lg:px-16">
       
       {/* Heading */}
@@ -394,11 +407,11 @@ const relatedProducts = useMemo(() => {
           const images = normalizeImages(product.images);
           const imageSrc =
             getValidImage(images?.[0]) ||
-            "https://cdns.barecms.com/images/product-placeholder.png";
+            "/images/product-placeholder.png";
 
           return (
-            <div key={product._id} className="min-w-[85%] shrink-0">
-              <ProductCard
+<div key={product.id} className="min-w-[85%] shrink-0">      
+          <ProductCard
                 product={{
                   ...product,
                   imageSrc,
@@ -415,11 +428,11 @@ const relatedProducts = useMemo(() => {
           const images = normalizeImages(product.images);
           const imageSrc =
             getValidImage(images?.[0]) ||
-            "https://cdns.barecms.com/images/product-placeholder.png";
+            "/images/product-placeholder.png";
 
           return (
             <ProductCard
-              key={product._id}
+              key={product.id}
               product={{
                 ...product,
                 imageSrc,

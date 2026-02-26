@@ -20,7 +20,7 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
-  return (
+   return (
     <section className="relative w-full min-h-screen bg-black overflow-hidden">
 
       {/* MOBILE BACKGROUND VIDEO */}
@@ -46,7 +46,7 @@ export default function Hero() {
           <p className="
             inline-flex items-center
             uppercase tracking-widest text-white/90 px-5 py-2.5 rounded-full
-            md:w-55 md:h-10 w-55 h-10 ml-4
+            md:w-55 md:h-10 w-55 h-10 ml-10
             bg-white/10 backdrop-blur-xl
             border border-white/20
             shadow-lg
@@ -54,7 +54,7 @@ export default function Hero() {
             Freshly Roasted
           </p>
 
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-cinzel font-bold mt-4 leading-tight">
+          <h1 className="text-5xl sm:text-5xl md:text-7xl font-cinzel font-bold mt-4 leading-tight">
             Modern Coffee.
           </h1>
 
@@ -69,9 +69,11 @@ export default function Hero() {
     Order Now
   </button>
 </Link>
-            <button className="w-full cursor-pointer sm:w-auto max-w-[220px] sm:max-w-none px-5 py-2.5 border border-white/30 rounded-full hover:bg-white/10 transition mx-auto sm:mx-0">
-              Read More
-            </button>
+            <Link href="/#Blogs">
+  <button className="w-full cursor-pointer sm:w-auto max-w-[220px] sm:max-w-none px-5 py-2.5 border border-white/30 rounded-full hover:bg-white/10 transition mx-auto sm:mx-0">
+    Read More
+  </button>
+</Link>
           </div>
         </div>
 
@@ -105,7 +107,7 @@ export default function Hero() {
                 />
               )}
               {/* Gradient overlay for luxury feel */}
-              <div className="absolute inset-0 bg-gradient-to-l from-transparent via-black/20 to-black" />
+              <div className="absolute inset-0 bg-gradient-to-l from-transparent via-black/5 to-black" />
             </div>
           ))}
         </div>

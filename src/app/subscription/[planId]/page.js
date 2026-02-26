@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { AddToCartThunk } from "@/redux/features/cartSlice";
+import { cheakoutThunk } from "@/redux/features/cheakoutSlice";
+import { showAddress } from "@/api/shippingApi";
 import { useRouter } from "next/navigation";
 
 
@@ -36,6 +38,9 @@ const userLoggedIn = !!user; // true if logged in
 
   const [selectedWeight, setSelectedWeight] = useState(null);
 
+  const [selectedFrequency, setSelectedFrequency] = useState("WEEKLY");
+const [selectedPaymentType, setSelectedPaymentType] = useState("PREPAID");
+
 /***** AUTO SELECT DEFAULT PRODUCT + WEIGHT *****/
 useEffect(() => {
   if (products.length > 0 && !selectedProduct) {
@@ -43,9 +48,8 @@ useEffect(() => {
     dispatch(setSelectedProduct(firstProduct));
 
     const firstWeight = firstProduct.weights?.find((w) => w.in_stock);
-    if  (firstWeight) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setSelectedWeight(firstWeight);
+    if (firstWeight) {
+      setSelectedWeight(firstWeight);
     }
   }
 }, [products, selectedProduct, dispatch]);
@@ -75,8 +79,10 @@ useEffect(() => {
 
     const finalPerDelivery = +(basePrice - discountAmount).toFixed(2);
 
-    const totalPrice =
-      +(finalPerDelivery * selectedPlan.deliveries_count).toFixed(2);
+   const totalPrice =
+  selectedPaymentType === "PREPAID"
+    ? +(finalPerDelivery * selectedPlan.deliveries_count).toFixed(2)
+    : +finalPerDelivery.toFixed(2);
 
     return {
       basePrice,
@@ -89,75 +95,89 @@ useEffect(() => {
   if (loading) return <p className="text-white p-10">Loading...</p>;
   if (!selectedPlan) return <p className="text-white p-10">Plan not found</p>;
 
-   /* ================= CART / BUY LOGIC ================= */
 
-   const handleAddToCart = () => {
-  if (!selectedProduct || !selectedWeight || !selectedPlan) return;
 
-  if (!userLoggedIn) {
-    router.push("/Auth/login"); // redirect to login
-    return;
-  }
 
-  const cartItem = {
-    product_id: selectedProduct.id,
-    quantity: selectedPlan.deliveries_count,
-    weight_kg: selectedWeight.weight_kg,
-    subscription_plan_id: selectedPlan.id,
-    price_per_delivery: priceBreakdown.finalPerDelivery,
-    total_price: priceBreakdown.totalPrice,
-  };
 
-  dispatch(AddToCartThunk(cartItem));
-};
+
+
+// buy now button 
 
 const handleBuyNow = async () => {
-  if (!selectedProduct || !selectedWeight || !selectedPlan) return;
 
-  if (!userLoggedIn) {
-    router.push("/Auth/login"); // redirect to login
+
+    // ✅ VALIDATION FIRST
+  if (!selectedProduct) {
+    alert("Please select a product.");
     return;
   }
 
-  try {
-    const res = await showAddress();
-    const address = res?.data || [];
-
-    if (address.length === 0) {
-      setShowAddressPopup(true);
-      return;
-    }
-
-    const defaultAddress = address.find((a) => a.is_default) || address[0];
-
-    const checkoutItem = {
-      product_id: selectedProduct.id,
-      weight_kg: selectedWeight.weight_kg,
-      quantity: selectedPlan.deliveries_count,
-      subscription_plan_id: selectedPlan.id,
-      price_per_delivery: priceBreakdown.finalPerDelivery,
-      total_price: priceBreakdown.totalPrice,
-    };
-
-    const result = await dispatch(
-      cheakoutThunk({
-        shipping_address_id: defaultAddress.id,
-        coupon_code: null,
-        items: [checkoutItem],
-      })
-    ).unwrap();
-
-    router.push(`/checkout?id=${result.checkout_session_id}`);
-  } catch (error) {
-    router.push("/Auth/login");
+  if (!selectedWeight) {
+    alert("Please select a weight.");
+    return;
   }
+
+  if (!selectedFrequency) {
+    alert("Please select delivery frequency.");
+    return;
+  }
+
+  if (!selectedPaymentType) {
+    alert("Please select payment type.");
+    return;
+  }
+    try {
+      const res = await showAddress()
+      const address = res?.data || []
+    
+    if(address.length > 0){
+      const defaultAddress =
+        address.find((a) => a.is_default) || address[0];
+
+  //     const result = await dispatch(
+  //       cheakoutThunk({
+  //          shipping_address_id: defaultAddress.id,
+  // coupon_code: null,
+  // items: [
+  //         {
+  //           product_id: selectedProduct.id,
+  //           weight_kg: selectedProduct.weights[0].weight_kg,
+  //           quantity: qty
+  //         }
+  //       ],
+  //       })
+  //     ).unwrap()
+
+const result = await dispatch(
+  cheakoutThunk({
+    shipping_address_id: defaultAddress.id,
+    coupon_code: null,
+    items: [
+      {
+        product_id: selectedProduct.id,
+        weight_kg: selectedWeight.weight_kg,
+        quantity: selectedPlan.deliveries_count,
+
+        is_subscription: 1,        // ✅ INSIDE item
+        plan_id: selectedPlan.id,  // ✅ INSIDE item
+         subscription_type: selectedPaymentType,
+frequency: selectedFrequency,
+price: priceBreakdown.finalPerDelivery
+      }
+    ]
+  })
+).unwrap();
+      router.push(`/checkout?id=${result.checkout_session_id}`)
+    }
+    else{
+      setShowAddressPopup(true)
+    }
+    } catch (error) {
+      router.push("/Auth/login")
+    }
 };
 
 
-
-
-
-   
 
 
   return (
@@ -275,6 +295,58 @@ const handleBuyNow = async () => {
             </>
           )}
 
+    <div className="flex justify-between items-center mb-10">
+
+  {/* LEFT SIDE - FREQUENCY */}
+  <div className="flex items-center gap-6">
+    <p className="text-lg uppercase tracking-widest text-[#c7a17a] font-cinzel font-semibold">
+      Frequency:
+    </p>
+
+    <div className="flex gap-3">
+      {["WEEKLY", "MONTHLY"].map((freq) => (
+        <button
+          key={freq}
+          onClick={() => setSelectedFrequency(freq)}
+          className={`px-5 py-2 rounded-full border text-sm
+            ${
+              selectedFrequency === freq
+                ? "bg-[#c7a17a] text-black border-[#c7a17a]"
+                : "border-[#3a2a1a] text-gray-300"
+            }`}
+        >
+          {freq}
+        </button>
+      ))}
+    </div>
+  </div>
+
+
+  {/* RIGHT SIDE - PAYMENT */}
+  <div className="flex items-center gap-6">
+    <p className="text-lg uppercase tracking-widest text-[#c7a17a] font-cinzel font-semibold">
+      Payment:
+    </p>
+
+    <div className="flex gap-3">
+      {["PREPAID", "POSTPAID"].map((type) => (
+        <button
+          key={type}
+          onClick={() => setSelectedPaymentType(type)}
+          className={`px-5 py-2 rounded-full border text-sm
+            ${
+              selectedPaymentType === type
+                ? "bg-[#c7a17a] text-black border-[#c7a17a]"
+                : "border-[#3a2a1a] text-gray-300"
+            }`}
+        >
+          {type}
+        </button>
+      ))}
+    </div>
+  </div>
+
+</div>
          {/* ================= PRICE SECTION ================= */}
 
 {selectedProduct && selectedWeight && priceBreakdown ? (
@@ -338,27 +410,16 @@ const handleBuyNow = async () => {
     </div>
   )
 
-)}
-
-
-         
-
-         
+)}    
 
              {/* ADD TO CART & BUY NOW BUTTONS */}
           <div className="flex gap-4 mt-6">
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={handleAddToCart}
-              className="cursor-pointer w-full bg-[#c7a17a]/80 text-black py-4 rounded-full font-bold flex items-center justify-center gap-3 hover:bg-[#d6ba9e] transition"
-            >
-              Add to Cart
-            </motion.button>
+        
 
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={handleBuyNow}
-              className="cursor-pointer w-full border border-[#c7a17a] bg-[#c7a17a]/80 text-black py-4 rounded-full font-bold flex items-center justify-center gap-3 hover:bg-[#d6ba9e] transition"
+              className="cursor-pointer w-100 border border-[#c7a17a] bg-[#c7a17a]/80 text-black py-4 rounded-full font-bold flex items-center justify-center gap-3 hover:bg-[#d6ba9e] transition ml-50"
             >
               Buy Now
             </motion.button>

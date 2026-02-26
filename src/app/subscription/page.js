@@ -15,7 +15,8 @@ import { getValidImage, normalizeImages } from "@/utils/getValidImage";
 export default function SubscribePage() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const scrollRef = useRef(null);
+ const planScrollRef = useRef(null);
+const productScrollRef = useRef(null);
 
   const [selectedCategory, setSelectedCategory] = useState("COFFEE");
   const [plans, setPlans] = useState([]);
@@ -58,15 +59,29 @@ export default function SubscribePage() {
     fetchPlansByCategory();
   }, [selectedCategory]);
 
-  // Scroll function
-  const scroll = (direction) => {
-    if (!scrollRef.current) return;
-    const scrollAmount = CARD_WIDTH + GAP;
-    scrollRef.current.scrollBy({
-      left: direction === "left" ? -scrollAmount : scrollAmount,
-      behavior: "smooth",
-    });
-  };
+  //scroll functions 
+
+const scrollPlans = (direction) => {
+  if (!planScrollRef.current) return;
+
+  const scrollAmount = CARD_WIDTH + GAP;
+
+  planScrollRef.current.scrollBy({
+    left: direction === "left" ? -scrollAmount : scrollAmount,
+    behavior: "smooth",
+  });
+};
+
+const scrollProducts = (direction) => {
+  if (!productScrollRef.current) return;
+
+  const scrollAmount = CARD_WIDTH + GAP;
+
+  productScrollRef.current.scrollBy({
+    left: direction === "left" ? -scrollAmount : scrollAmount,
+    behavior: "smooth",
+  });
+};
 
   // Responsive check
   useEffect(() => {
@@ -77,7 +92,7 @@ export default function SubscribePage() {
   }, []);
 
   return (
-    <section className="relative min-h-screen px-6 md:px-16 py-16 bg-[#231b0f]">
+<section className="relative min-h-screen px-6 md:px-16 py-16 bg-[#231b0f]">
       <SubscriptionHero />
 
       {/* Heading Section */}
@@ -117,9 +132,9 @@ export default function SubscribePage() {
    
 
       {/* ================= PLANS SECTION ================= */}
-      <section className="bg-[#24160E] py-16">
-        <div className="max-w-[1600px] px-10 mx-auto">
-          <h2 className="text-2xl font-cinzel text-white text-center mb-6">
+   
+       <div className="max-w-7xl mx-auto px-6 md:px-10 py-12">
+          <h2 className="text-3xl font-cinzel text-white text-center mb-6">
             Choose Your Subscription Plan
           </h2>
 
@@ -148,17 +163,29 @@ export default function SubscribePage() {
               No {selectedCategory.toLowerCase()} plans available
             </p>
           ) : (
-           <div className="flex justify-center gap-6 flex-wrap">
+           <div
+ ref={planScrollRef}
+  className={clsx(
+    "flex gap-6",
+    isDesktop
+      ? "justify-center flex-wrap"
+      : "overflow-x-auto snap-x snap-mandatory px-4 scrollbar-hide"
+  )}
+>
   {plans.map((plan) => (
     <div
       key={plan.id}
       onClick={() => router.push(`/subscription/${plan.id}`)}
-      className="bg-[#2e1f14] text-white w-[280px] p-6 rounded-2xl cursor-pointer hover:scale-105 transition-all duration-300 border border-[#3a281c]"
+      className="shrink-0 snap-start bg-[#2e1f14] text-white w-[260px] p-6 rounded-2xl cursor-pointer hover:scale-105 transition-all duration-300 border border-[#3a281c]"
     >
       <h3 className="text-xl font-cinzel mb-4 text-center">{plan.name}</h3>
-      <p className="text-sm text-white/70 text-center mb-6">
-        {plan.description || "Customize your subscription"}
+      <p className="text-sm text-white/70 text-center mb-6 ">
+        {plan.description || "Customize your subscription "}
+       
       </p>
+       <p className="text-sm text-white/70 text-center mb-1 ">
+       {plan.description || "Plan Starting at "}
+       </p>
       <div className="text-center">
         <p className="text-3xl font-bold">₹{plan.display_price}</p>
         <p className="text-xs text-white/50 mt-1">{plan.deliveries_count} Deliveries</p>
@@ -166,18 +193,42 @@ export default function SubscribePage() {
       <button className="mt-6 w-full bg-white text-black py-2 rounded-full font-medium hover:bg-gray-200 transition">
         Select Plan
       </button>
+
+      
     </div>
+
+   
   ))}
 </div>
 
+
+
           )}
+
+          <div className="flex justify-center gap-6 mt-10">
+             <button
+                  onClick={() => scrollPlans("left")}
+                  className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-white hover:text-black transition"
+                >
+                  ←
+                </button>
+
+                <button
+                  onClick={() => scrollPlans("right")}
+                  className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-white hover:text-black transition"
+                >
+                  →
+                </button>
+
+
+          </div>
         </div>
-      </section>
+      
 
       {/* ================= PRODUCTS SECTION ================= */}
-      <section className="bg-[#24160E] pt-10 pb-20">
-        <div className="max-w-[1600px] px-10 -mt-26 py-12">
-          <h2 className="text-2xl font-cinzel text-white text-center mb-10">
+      
+       <div className="max-w-7xl mx-auto px-6 md:px-18 py-12 ">
+          <h2 className="text-3xl font-cinzel text-white text-center mb-10">
             Choose Products for Subscription
           </h2>
 
@@ -185,12 +236,9 @@ export default function SubscribePage() {
             <p className="text-center text-white/60">Loading products…</p>
           ) : (
             <>
-              <div
-                className="w-full overflow-x-hidden"
-                style={isDesktop ? { width: VIEWPORT_WIDTH } : {}}
-              >
+           <div className="w-full max-w-7xl mx-auto">
                 <div
-                  ref={scrollRef}
+                  ref={productScrollRef}
                   className="flex gap-6 scroll-smooth scrollbar-hide overflow-x-hidden"
                 >
                   {subscribableProducts.map((product) => {
@@ -219,14 +267,14 @@ export default function SubscribePage() {
 
               <div className="flex justify-center gap-6 mt-10">
                 <button
-                  onClick={() => scroll("left")}
+                  onClick={() => scrollProducts("left")}
                   className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-white hover:text-black transition"
                 >
                   ←
                 </button>
 
                 <button
-                  onClick={() => scroll("right")}
+                  onClick={() => scrollProducts("right")}
                   className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-white hover:text-black transition"
                 >
                   →
@@ -235,7 +283,7 @@ export default function SubscribePage() {
             </>
           )}
         </div>
-      </section>
+      
     </section>
   );
 }
