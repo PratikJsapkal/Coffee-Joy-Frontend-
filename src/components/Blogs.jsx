@@ -9,7 +9,7 @@ const Blogs = () => {
   const bottomBlogs = blogs.slice(4);
 
   return (
-    <section className="min-h-screen bg-black px-4 md:px-12 py-14">
+    <section id="Blogs" className="min-h-screen bg-black px-4 md:px-12 py-14 scroll-mt-18">
       {/* ================= HEADING ================= */}
       <div className="text-center mb-12">
         <h1 className="text-3xl md:text-5xl font-cinzel text-white">

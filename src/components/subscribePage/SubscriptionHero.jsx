@@ -71,14 +71,14 @@ function SubscriptionHero() {
     </ul>
     
 
-    <button className="px-10 py-4 rounded-full 
+    {/* <button className="px-10 py-4 rounded-full 
   bg-black/60 backdrop-blur-
   text-white text-sm font-semibold 
   border border-white/20
   hover:bg-black/80 hover:scale-100
   transition">
   SUBSCRIBE NOW
-</button>
+</button> */}
 
   </div>
 </div>
