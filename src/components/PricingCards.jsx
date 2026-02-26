@@ -5,51 +5,38 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import { getActivePlans } from "@/api/subscriptionApi";
 
 
 export default function PricingCards() {
   const [isPods, setIsPods] = React.useState(false);
   const router = useRouter();
 
+  const [plans, setPlans] = React.useState([]);
+const [loading, setLoading] = React.useState(false);
 
-  /* ---------------- DATA ---------------- */
-  const coffeePlans = [
-    {
-      title: "1829 Espresso",
-      price: "$12.00",
-      description:
-        "A flexible monthly coffee subscription charged automatically. Enjoy freshly roasted beans delivered on schedule, with full control to pause, skip, or cancel anytime.",
-      gradient: "from-[#f3e2c7] to-[#e8c39e]",
-    },
-    {
-      title: "Roaster's Spotlight",
-      price: "$15.00",
-      description:
-        "Pay upfront and enjoy a curated coffee journey. Ideal for gifting or long-term savings, with premium roasts delivered consistently for months ahead.",
-      gradient: "from-[#b56a73] to-[#7b3b44]",
-      highlight: true,
-    },
-  ];
+React.useEffect(() => {
+  const fetchPlans = async () => {
+    setLoading(true);
+    try {
+      const category = isPods ? "PODS" : "COFFEE";
+      const data = await getActivePlans(category);
 
-  const podsPlans = [
-    {
-      title: "Autopay Subscription",
-      price: "$10.00",
-      description:
-        "Convenient autopay pod deliveries designed for everyday ease. Perfectly portioned pods arrive regularly, so your coffee routine never misses a beat.",
-      gradient: "from-[#e6d3b1] to-[#c8a57a]",
-    },
-    {
-      title: "Prepaid Subscription",
-      price: "$55.00",
-      description:
-        "Stock up and save with a prepaid pod subscription. A fixed number of premium pods delivered over time, offering great value and consistent quality.",
-      gradient: "from-[#8a4f56] to-[#5c2c32]",
-      highlight: true,
-    },
-  ];
+      // ✅ Only show first 2 plans
+      setPlans(data?.slice(0, 2) || []);
+    } catch (error) {
+      console.error("Error fetching plans:", error);
+      setPlans([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const plans = isPods ? podsPlans : coffeePlans;
+  fetchPlans();
+}, [isPods]);
+
+
+
 
   return (
       <section id="subscribe" className="scroll-mt-28">
@@ -60,7 +47,7 @@ export default function PricingCards() {
       <div className="absolute inset-0 bg-[#faf6ef]/40 z-0" />
 
       <Image
-        src="/images/bg2.webp"
+        src="https://cdns.barecms.com/images/bg2.webp"
         alt="Coffee Background"
         fill
         priority
@@ -71,14 +58,14 @@ export default function PricingCards() {
 
         <div className="pointer-events-none absolute inset-0 z-[5]">
         <img
-          src="/images/subscribe1.webp"
+          src="https://cdns.barecms.com/images/subscribe1.webp"
           alt=""
           className="
             absolute
             top-20 sm:-top-40 overflow-hidden
             right-285
             w-[40%] sm:w-[30%]
-            max-w-none
+            max-w-none  
             
             opacity-90
           "
@@ -164,58 +151,53 @@ export default function PricingCards() {
           >
            <div className="flex flex-col items-center sm:flex-row  md:gap-10 gap-8">
 
-            {plans.map((plan, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ y: -6 }}
-                className="
-                  w-[280px] sm:w-[320px] lg:w-[380px]
-                  rounded-3xl
-                  p-8
-                  bg-white/10
-                  backdrop-blur-3xl
-                  border border-white/20
-                  text-white
-                  shadow-xl
-                 
-                 
-                   h-full
-                   
-                  
-                  
-                "
-              >
-                <p className="uppercase text-xs opacity-70 mb-2">
-                  Coffee & Joy
-                </p>
+    {loading ? (
+  <p className="text-white">Loading plans...</p>
+) : (
+  plans.map((plan) => (
+    <motion.div
+      key={plan.id}
+      whileHover={{ y: -6 }}
+      className="w-[280px] sm:w-[320px] lg:w-[380px] rounded-3xl p-8 bg-white/10 backdrop-blur-3xl border border-white/20 text-white shadow-xl  "
+    >
+      <p className="uppercase text-xs opacity-70 mb-2">
+        {isPods ? "Pods Plan" : "Coffee Plan"}
+      </p>
 
-                <h2 className="text-xl font-semibold mb-4">
-                  {plan.title}
-                </h2>
+      <h2 className="text-xl font-semibold mb-4">
+        {plan.name}
+      </h2>
 
-                <p className="text-sm opacity-80 mb-6">
-                  {plan.description}
-                </p>
+      <p className="text-sm opacity-80 mb-6">
+        {plan.description || "Customize your subscription easily"}
+      </p>
 
-                <p className="text-3xl font-semibold mb-1">
-                  {plan.price}
-                </p>
+      <p className="text-3xl font-semibold mb-1">
+        ₹{plan.display_price}
+      </p>
 
-                <ul className="text-sm space-y-2 my-6 opacity-80">
-                  <li>✓ Expertly roasted</li>
-                  <li>✓ Pause anytime</li>
-                  <li>✓ 10% off always</li>
-                </ul>
+      <ul className="text-sm space-y-2 my-6 opacity-80">
+        <li>✓ Expertly roasted</li>
+        <li>✓ Pause anytime</li>
+        <li>✓ {plan.deliveries_count} Deliveries</li>
+      </ul>
 
-               <button
-  onClick={() => router.push("/subscribe")}
-  className="w-full py-3 rounded-full bg-white text-[#2a1f1b] font-bold text-sm hover:scale-105 transition"
->
-  SUBSCRIBE NOW
-</button>
+      <div className="border-t border-white/20 my-6 " />
 
-              </motion.div>
-            ))}
+<p className="text-xs text-white/60 text-center leading-relaxed mb-7">
+  Perfect for daily coffee drinkers who want convenience,
+  savings, and consistent quality delivered to their doorstep.
+</p>
+
+      <button
+        onClick={() => router.push("/subscription")}
+        className="w-full py-3 rounded-full bg-white text-[#2a1f1b] font-bold text-sm hover:scale-105 transition"
+      >
+        SUBSCRIBE NOW
+      </button>
+    </motion.div>
+  ))
+)}
             </div>
           </motion.div>
         </AnimatePresence>

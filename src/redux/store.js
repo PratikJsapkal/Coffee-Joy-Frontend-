@@ -12,6 +12,7 @@ import subscriptionReducer from "./features/subscriptionSlice";
 import ordersReducer from "./features/orderSlice"
 import couponReducer from "./features/couponSlice";
 import uiReducer from "./features/uiSlice";
+import reviewReducer from "./features/reviewSlice"
 
 
 const store = configureStore({
@@ -29,6 +30,7 @@ const store = configureStore({
           orders : ordersReducer,
           coupon: couponReducer,
           ui : uiReducer,
+           reviews: reviewReducer,
           
     }
 })
