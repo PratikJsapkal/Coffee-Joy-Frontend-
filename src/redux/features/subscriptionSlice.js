@@ -4,9 +4,10 @@ import {
   getPlanById,
   getSubscribableProducts,
   previewSubscription,
+  getMySubscriptions,
 } from "@/api/subscriptionApi";
 
-// ================= FETCH PLANS =================
+// ================= FETCH PLANS ========xh=========
 export const fetchPlans = createAsyncThunk(
   "subscription/fetchPlans",
   async (category, { rejectWithValue }) => {
@@ -54,6 +55,21 @@ export const previewSubscriptionThunk = createAsyncThunk(
   }
 );
 
+//==================Users-MySubscriptions================
+export const fetchMySubscriptions = createAsyncThunk(
+  "subscription/fetchMySubscriptions",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await getMySubscriptions();
+      return res; 
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to load subscriptions"
+      );
+    }
+  }
+);
+
 const subscriptionSlice = createSlice({
   name: "subscription",
   initialState: {
@@ -62,6 +78,7 @@ const subscriptionSlice = createSlice({
     products: [],
     selectedProduct: null,
     previewData: null,
+    mySubscriptions: [],
     loading: false,
     error: null,
   },
@@ -104,7 +121,20 @@ const subscriptionSlice = createSlice({
       // Preview
       .addCase(previewSubscriptionThunk.fulfilled, (state, action) => {
         state.previewData = action.payload;
-      });
+      })
+
+      //my subscriptions
+      .addCase(fetchMySubscriptions.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchMySubscriptions.fulfilled, (state, action) => {
+        state.loading = false;
+        state.mySubscriptions = action.payload;
+      })
+      .addCase(fetchMySubscriptions.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

@@ -37,7 +37,7 @@ export const previewSubscription = async (data) => {
 
 // Get my subscriptions
 export const getMySubscriptions = async () => {
-  const response = await api.get("/subscription/mySubscription");
+  const response = await api.get("/subscription/my");
   return response.data;
 };
 
