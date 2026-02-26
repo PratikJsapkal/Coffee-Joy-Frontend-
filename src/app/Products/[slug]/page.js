@@ -320,7 +320,7 @@ const relatedProducts = useMemo(() => {
   }
 />
 
-<Spec label="Quantity" value={selectedWeight?.quantity} />
+
 
           
               
