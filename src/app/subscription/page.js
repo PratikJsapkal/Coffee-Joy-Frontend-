@@ -12,6 +12,7 @@ import { fetchProducts } from "@/redux/features/productSlice";
 import { getActivePlans } from "@/api/subscriptionApi";
 import { getValidImage, normalizeImages } from "@/utils/getValidImage";
 
+
 export default function SubscribePage() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -83,6 +84,14 @@ const scrollProducts = (direction) => {
   });
 };
 
+  useEffect(() => {
+    if (window.location.hash) {
+      const element = document.querySelector(window.location.hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, []);
   // Responsive check
   useEffect(() => {
     const checkScreen = () => setIsDesktop(window.innerWidth >= 1024);
@@ -132,6 +141,8 @@ const scrollProducts = (direction) => {
    
 
       {/* ================= PLANS SECTION ================= */}
+
+      <section id="plans" className="scroll-mt-24">
    
        <div className="max-w-7xl mx-auto px-6 md:px-10 py-12">
           <h2 className="text-3xl font-cinzel text-white text-center mb-6">
@@ -223,6 +234,7 @@ const scrollProducts = (direction) => {
 
           </div>
         </div>
+        </section>
       
 
       {/* ================= PRODUCTS SECTION ================= */}
