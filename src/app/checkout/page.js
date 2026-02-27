@@ -337,7 +337,7 @@ const handleApplyCoupon = async () => {
     Apply Coupon
   </h2>
 
-  <div className="flex gap-2 flex-col sm:flex-row">
+  <div className="flex gap-2 flex-col sm:flex-row  text-[#120d0b]">
     <input
       type="text"
       value={couponCode}
