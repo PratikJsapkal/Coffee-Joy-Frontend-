@@ -221,7 +221,7 @@ function PageContent() {
                           e.preventDefault();
                           handleAddToCart(item);
                         }}
-                        className="px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-black text-[#F3E0C8] text-xs sm:text-sm hover:bg-[#F3E0C8] hover:text-black transition"
+                        className="px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-black text-[#F3E0C8] text-xs sm:text-sm hover:bg-[#F3E0C8] hover:text-black transition cursor-pointer"
                       >
                         Add
                       </button>

@@ -97,9 +97,9 @@ React.useEffect(() => {
             </p>
 
             {/* TOGGLE */}
-            <div className="flex items-center justify-center lg:justify-start gap-4">
+            <div className="flex items-center justify-center lg:justify-start gap-4 ">
            <span
-  className={clsx("text-sm", {
+  className={clsx("text-xl", {
     "opacity-50": isPods,
     "opacity-100": !isPods,
   })}
@@ -113,14 +113,14 @@ React.useEffect(() => {
                 className="relative w-14 h-7 rounded-full bg-[#e5dfdd]/30 border border-[#2a1f1b]/40 cursor-pointer flex items-center"
               >
                 <motion.div
-                  className="w-6 h-6 bg-[#2a1f1b] rounded-full"
+                  className="w-6 h-6 bg-[#291e1a] rounded-full"
                   animate={{ x: isPods ? 26 : 2 }}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
               </div>
 
              <span
-  className={clsx("text-sm", {
+  className={clsx("text-xl", {
     "opacity-100": isPods,
     "opacity-60": !isPods,
   })}

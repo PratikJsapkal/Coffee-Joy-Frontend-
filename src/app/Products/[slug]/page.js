@@ -17,6 +17,7 @@ import { fetchProducts } from "@/redux/features/productSlice";
 import ProductCard from "@/components/product/ProductCards";
 import { useMemo } from "react";
 import ProductReviewsSection from "@/components/product/ProductReviewsSection"
+import Link from "next/link";
 
 
 
@@ -269,13 +270,14 @@ const relatedProducts = useMemo(() => {
   </div>
 
   {product?.is_subscribable && (
+ <Link href="/subscription#plans">
   <motion.button
     whileTap={{ scale: 0.95 }}
-    onClick={() => router.push("/subscription")}
     className="cursor-pointer px-6 py-1.5 text-md font-semibold rounded-full bg-[#c7a17a] text-black hover:bg-[#d6ba9e] transition"
   >
     Subscribe & Save !
   </motion.button>
+</Link>
 )}
 </div>
 {/* Weight Selector */}

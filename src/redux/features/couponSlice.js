@@ -1,18 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getEligibleCoupons, applyCouponApi } from "@/api/couponApi";
-
-// 🔹 Fetch Eligible Coupons
-export const fetchEligibleCoupons = createAsyncThunk(
-  "coupon/fetchEligible",
-  async (_, { rejectWithValue }) => {
-    try {
-      const data = await getEligibleCoupons();
-      return data;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Error");
-    }
-  }
-);
+import { applyCouponApi } from "@/api/couponApi";
 
 // 🔹 Apply Coupon
 export const applyCoupon = createAsyncThunk(
@@ -22,7 +9,9 @@ export const applyCoupon = createAsyncThunk(
       const data = await applyCouponApi(coupon_code);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Error");
+      return rejectWithValue(
+        err.response?.data?.message || "Something went wrong"
+      );
     }
   }
 );
@@ -30,7 +19,6 @@ export const applyCoupon = createAsyncThunk(
 const couponSlice = createSlice({
   name: "coupon",
   initialState: {
-    coupons: [],
     cartAmount: 0,
     discountAmount: 0,
     finalAmount: 0,
@@ -38,39 +26,39 @@ const couponSlice = createSlice({
     error: null
   },
   reducers: {
+    setCartAmount: (state, action) => {
+      state.cartAmount = action.payload;
+      state.finalAmount = action.payload; // reset final amount
+    },
     clearCoupon: (state) => {
       state.discountAmount = 0;
       state.finalAmount = state.cartAmount;
+      state.error = null;
     }
   },
   extraReducers: (builder) => {
     builder
 
-      // Fetch Eligible
-      .addCase(fetchEligibleCoupons.pending, (state) => {
+      // 🔄 Pending
+      .addCase(applyCoupon.pending, (state) => {
         state.loading = true;
-      })
-      .addCase(fetchEligibleCoupons.fulfilled, (state, action) => {
-        state.loading = false;
-        state.coupons = action.payload.coupons;
-        state.cartAmount = action.payload.cartAmount;
-        state.finalAmount = action.payload.cartAmount;
-      })
-      .addCase(fetchEligibleCoupons.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.error = null;
       })
 
-      // Apply Coupon
+      // ✅ Success
       .addCase(applyCoupon.fulfilled, (state, action) => {
+        state.loading = false;
         state.discountAmount = action.payload.discountAmount;
         state.finalAmount = action.payload.finalAmount;
       })
+
+      // ❌ Failed
       .addCase(applyCoupon.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload;
       });
   }
 });
 
-export const { clearCoupon } = couponSlice.actions;
+export const { setCartAmount, clearCoupon } = couponSlice.actions;
 export default couponSlice.reducer;
