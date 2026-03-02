@@ -40,10 +40,11 @@ export default function Orders({ onBack }) {
 
   /* ---------------- STATUS FILTER LOGIC ---------------- */
   const filteredOrders = orders?.filter((order) => {
+    const status = order.status?.trim().toLowerCase();
     if (activeStatus === "all") return true;
-    if (activeStatus === "pending") return order.status === "pending";
-    if (activeStatus === "completed") return order.status === "delivered";
-    if (activeStatus === "cancelled") return order.status === "cancelled";
+    if (activeStatus === "pending") return status === "pending";
+    if (activeStatus === "completed") return status === "delivered";
+    if (activeStatus === "cancelled") return status === "cancelled";
     return true;
   });
 
@@ -130,6 +131,7 @@ export default function Orders({ onBack }) {
               const images = normalizeImages(order.product_image);
               const mainImage = images[0];
 
+              const status = order.status?.trim().toLowerCase();
               return (
                 <div
                   className="grid md:grid-cols-5 gap-4 p-4 rounded-xl border border-[#5c4632]"
@@ -160,16 +162,18 @@ export default function Orders({ onBack }) {
                   <div className="md:text-center font-semibold uppercase">
                     <span
                       className={
-                        order.status === "pending"
+                       status === "pending"
                           ? "text-yellow-400"
-                          : order.status === "PAID"
+                          : status === "paid"
                           ? "text-blue-400"
-                          : order.status === "delivered"
+                          : status === "delivered"
                           ? "text-green-400"
+                          : status === "cancelled"
+                          ? "text-red-400"
                           : "text-red-400"
                       }
                     >
-                      {order.status || "Pending"}
+                      {order.status}
                     </span>
                   </div>
 
