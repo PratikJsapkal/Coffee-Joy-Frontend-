@@ -5,6 +5,7 @@ import {
   getSubscribableProducts,
   previewSubscription,
   getMySubscriptions,
+  updateSubscriptionStatus
 } from "@/api/subscriptionApi";
 
 // ================= FETCH PLANS ========xh=========
@@ -66,6 +67,21 @@ export const fetchMySubscriptions = createAsyncThunk(
       return rejectWithValue(
         err.response?.data?.message || "Failed to load subscriptions"
       );
+    }
+  }
+);
+
+//===================== Update Subscription Status ====================//
+export const updateSubscriptionStatusThunk = createAsyncThunk(
+  "subscription/updateStatus",
+  async ({id, status}, { rejectWithValue}) => {
+    try {
+      const res = await updateSubscriptionStatus(id, status);
+      return { id, status};
+    } catch (err){
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to update subscription status"
+      )
     }
   }
 );
@@ -134,6 +150,16 @@ const subscriptionSlice = createSlice({
       .addCase(fetchMySubscriptions.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // Update Subscription Status
+      .addCase(updateSubscriptionStatusThunk.fulfilled, (state, action) => {
+        const {id, status} = action.payload;
+
+        const sub = state.mySubscriptions.find((s) => s.id === id);
+        if (sub) {
+          sub.status = status;
+        }
       })
   },
 });

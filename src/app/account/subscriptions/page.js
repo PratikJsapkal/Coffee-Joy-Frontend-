@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMySubscriptions } from "@/redux/features/subscriptionSlice";
+import { updateSubscriptionStatusThunk } from "@/redux/features/subscriptionSlice";
 
 export default function Subscriptions({ onBack }) {
   const dispatch = useDispatch();
@@ -16,6 +17,11 @@ export default function Subscriptions({ onBack }) {
   useEffect(() => {
     dispatch(fetchMySubscriptions());
   }, [dispatch]);
+
+
+  const handleStatusChange = (id, status)=>{
+    dispatch(updateSubscriptionStatusThunk({id, status}));
+  };
 
   return (
     <div className="relative w-full">
@@ -124,10 +130,14 @@ export default function Subscriptions({ onBack }) {
               <div className="flex gap-3 mt-5">
                 {sub.status === "active" && (
                   <>
-                    <button className="px-4 py-1.5 text-sm rounded bg-yellow-600">
+                    <button
+                    onClick={() => handleStatusChange(sub.id, "paused")}
+                    className="px-4 py-1.5 text-sm rounded bg-yellow-600">
                       Pause
                     </button>
-                    <button className="px-4 py-1.5 text-sm rounded bg-red-600">
+                    <button 
+                    onClick={() => handleStatusChange(sub.id, "cancelled")}
+                    className="px-4 py-1.5 text-sm rounded bg-red-600">
                       Cancel
                     </button>
                   </>
@@ -135,10 +145,14 @@ export default function Subscriptions({ onBack }) {
 
                 {sub.status === "paused" && (
                   <>
-                    <button className="px-4 py-1.5 text-sm rounded bg-green-600">
+                    <button 
+                    onClick={() => handleStatusChange(sub.id, "active")}
+                    className="px-4 py-1.5 text-sm rounded bg-green-600">
                       Resume
                     </button>
-                    <button className="px-4 py-1.5 text-sm rounded bg-red-600">
+                    <button 
+                    onClick={() => handleStatusChange(sub.id, "cancelled")}
+                    className="px-4 py-1.5 text-sm rounded bg-red-600">
                       Cancel
                     </button>
                   </>

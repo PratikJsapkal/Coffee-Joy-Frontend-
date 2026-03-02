@@ -47,26 +47,9 @@ export const directSubscribe = async (data) => {
   return response.data;
 };
 
-// Pause subscription
-export const pauseSubscription = async (id) => {
-  const response = await api.post(`/subscription/${id}/pause`);
-  return response.data;
-};
+// update subscription
+export const updateSubscriptionStatus = async ( id, status) => {
+  const res = await api.put(`/subscription/status/${id}`, {status});
+  return res.data ;
 
-// Resume subscription
-export const resumeSubscription = async (id) => {
-  const response = await api.post(`/subscription/${id}/resume`);
-  return response.data;
-};
-
-// Cancel subscription
-export const cancelSubscription = async (id) => {
-  const response = await api.post(`/subscription/${id}/cancel`);
-  return response.data;
-};
-
-// Renew subscription
-export const renewSubscription = async (id) => {
-  const response = await api.post(`/subscription/${id}/renew`);
-  return response.data;
-};
+}
